@@ -57,6 +57,7 @@ where Content : View
     private var content: () -> Content
     private var decelerationRate: ScrollDecelerationRate
     private var showsIndicators: Bool
+    private var eventHandler: SnapToScrollEventHandler?
 }
 
 
@@ -76,14 +77,32 @@ public extension SnappingScrollView {
     ///     suitable for the platform. The default value for this parameter is
     ///     `true`.
     ///   - content: The view builder that creates the scrollable view.
+    ///   - eventHandler:
+    ///
+        
     init(_ axis: Axis = .vertical,
          decelerationRate: ScrollDecelerationRate = .normal,
          showsIndicators: Bool = true,
-         @ViewBuilder content: @escaping () -> Content)
-    {
+         @ViewBuilder content: @escaping () -> Content,
+         eventHandler: SnapToScrollEventHandler? = .none) {
+        
         self.axis = axis
         self.content = content
         self.decelerationRate = decelerationRate
         self.showsIndicators = showsIndicators
+        self.eventHandler = eventHandler
+    }
+}
+
+extension SnappingScrollView {
+    public typealias SnapToScrollEventHandler = ((SnapToScrollEvent) -> Void)
+    
+    public enum SnapToScrollEvent {
+        
+        /// Swiped to index.
+        case swipe(index: Int)
+        
+        /// HStackSnap completed layout calculations. (item index, item leading offset)
+        case didLayout(layoutInfo: [Int: CGFloat])
     }
 }
