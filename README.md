@@ -43,7 +43,7 @@ SnappingScrollView(.horizontal, decelerationRate: .fast) {
         ForEach(...) {
             //Page view
                 .padding(.trailing)
-                .snappingScrollAnchor(.bounds)
+                .scrollSnappingAnchor(.bounds)
         }
     }
 }
